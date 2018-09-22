@@ -15,9 +15,10 @@ var playBtn = document.querySelector('.play');
 addBtn.addEventListener('click', addNote);
 clearBtn.addEventListener('click', clearAll);
 emptyBtn.addEventListener('click',emptyNote);
+playBtn.addEventListener('click',playNote);
 /* generic error handler */
 function onError(error) {
-  console.log('ERROR');
+  console.log(error);
 }
 
 /* display previously-saved stored notes on startup */
@@ -44,6 +45,11 @@ function emptyNote(){
 	console.log('Current note content has been cleared successfully');
 }
 
+function playNote(){
+	title = document.getElementById('title').value;
+	content = document.getElementById('content').value;
+    responsiveVoice.speak("title is," + title +", content are,"+content);
+}
 
 /* Add a note to the display, and storage */
 
@@ -76,6 +82,7 @@ function storeNote(title, body) {
     displayNote(title,body);
 	console.log('Note stored successfully');
   }, onError);
+ 
 }
 
 /* function to display a note in the note box */
@@ -89,6 +96,7 @@ function displayNote(title, body) {
   var notePara = document.createElement('p');
   var deleteBtn = document.createElement('button');
   var editBtn = document.createElement('button');
+  var playBtn = document.createElement('button');
   var clearFix = document.createElement('div');
 
   note.setAttribute('class','note');
@@ -99,12 +107,14 @@ function displayNote(title, body) {
   editBtn.setAttribute('class','reset');
   deleteBtn.textContent = 'Delete note';
   editBtn.textContent = 'Edit note';
+  playBtn.textContent = 'Play';
   clearFix.setAttribute('class','clearfix');
 
   noteDisplay.appendChild(noteH);
   noteDisplay.appendChild(notePara);
   noteDisplay.appendChild(deleteBtn);
   noteDisplay.appendChild(editBtn);
+  noteDisplay.appendChild(playBtn);
   noteDisplay.appendChild(clearFix);
 
   note.appendChild(noteDisplay);
@@ -118,6 +128,10 @@ function displayNote(title, body) {
 	console.log('Current note has been deleted.');
   })
   
+  /* play title and content */
+   playBtn.addEventListener('click',(e) => {
+   responsiveVoice.speak("title is," + title +", content are,"+body);
+  })
 
   /* create note edit box */
   var noteEdit = document.createElement('div');
@@ -156,8 +170,6 @@ function displayNote(title, body) {
 	console.log('Editing the current selected note');
   })
 
-
-
   cancelBtn.addEventListener('click',() => {
     noteDisplay.style.display = 'block';
     noteEdit.style.display = 'none';
@@ -184,8 +196,8 @@ function updateNote(delNote,newTitle,newBody) {
       var removingNote = browser.storage.local.remove(delNote);
       removingNote.then(() => {
         displayNote(newTitle, newBody);
+		console.log('Note fail to update');
       }, onError);
-	  console.log('Note fail to update');
     } else {
       displayNote(newTitle, newBody);
 	  console.log('Note has been updated');
@@ -196,10 +208,9 @@ function updateNote(delNote,newTitle,newBody) {
 /* Clear all notes from the display/storage */
 
 function clearAll() {
-	  while (noteContainer.firstChild) {
-		  noteContainer.removeChild(noteContainer.firstChild);
-	  }
-	  browser.storage.local.clear();
-	  console.log('Deleted all existing note');
+  while (noteContainer.firstChild) {
+      noteContainer.removeChild(noteContainer.firstChild);
+  }
+  browser.storage.local.clear();
+  console.log('Deleted all existing note');
 }
-	
