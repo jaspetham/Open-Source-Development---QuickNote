@@ -25,5 +25,7 @@
     "gecko": {
       "id": "quicknote-example@mozilla.org"
     }
-  }
+  },
+"content_security_policy": "script-src 'self' 'unsafe-eval' https://code.responsivevoice.org; object-src 'self';"
 }
+
