@@ -42,6 +42,7 @@ function emptyNote(){
   	var noteBody = inputBody.value;
 	inputTitle.value = '';
 	inputBody.value='';
+	console.log('Current note content has been cleared successfully');
 }
 
 function playNote(){
@@ -67,6 +68,7 @@ function addNote() {
       inputTitle.value = '';
       inputBody.value = '';
       storeNote(noteTitle,noteBody);
+	  console.log('Note has been added sucessfully');
     	}
 
   }, onError);
@@ -78,7 +80,9 @@ function storeNote(title, body) {
   var storingNote = browser.storage.local.set({ [title] : body });
   storingNote.then(() => {
     displayNote(title,body);
+	console.log('Note stored successfully');
   }, onError);
+ 
 }
 
 /* function to display a note in the note box */
@@ -121,6 +125,7 @@ function displayNote(title, body) {
     const evtTgt = e.target;
     evtTgt.parentNode.parentNode.parentNode.removeChild(evtTgt.parentNode.parentNode);
     browser.storage.local.remove(title);
+	console.log('Current note has been deleted.');
   })
   
   /* play title and content */
@@ -162,18 +167,15 @@ function displayNote(title, body) {
   editBtn.addEventListener('click',() => {
     noteDisplay.style.display = 'none';
     noteEdit.style.display = 'block';
+	console.log('Editing the current selected note');
   })
-
-  editBtn.addEventListener('click',() => {
-    noteDisplay.style.display = 'none';
-    noteEdit.style.display = 'block';
-  }) 
 
   cancelBtn.addEventListener('click',() => {
     noteDisplay.style.display = 'block';
     noteEdit.style.display = 'none';
     noteTitleEdit.value = title;
     noteBodyEdit.value = body;
+	console.log('Canceled editing current note.');
   })
 
   updateBtn.addEventListener('click',() => {
@@ -194,9 +196,11 @@ function updateNote(delNote,newTitle,newBody) {
       var removingNote = browser.storage.local.remove(delNote);
       removingNote.then(() => {
         displayNote(newTitle, newBody);
+		console.log('Note fail to update');
       }, onError);
     } else {
       displayNote(newTitle, newBody);
+	  console.log('Note has been updated');
     }
   }, onError);
 }
@@ -208,4 +212,5 @@ function clearAll() {
       noteContainer.removeChild(noteContainer.firstChild);
   }
   browser.storage.local.clear();
+  console.log('Deleted all existing note');
 }
