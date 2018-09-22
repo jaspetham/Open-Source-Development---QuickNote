@@ -15,9 +15,10 @@ var playBtn = document.querySelector('.play');
 addBtn.addEventListener('click', addNote);
 clearBtn.addEventListener('click', clearAll);
 emptyBtn.addEventListener('click',emptyNote);
+playBtn.addEventListener('click',playNote);
 /* generic error handler */
 function onError(error) {
-  console.log('ERROR');
+  console.log(error);
 }
 
 /* display previously-saved stored notes on startup */
@@ -41,9 +42,13 @@ function emptyNote(){
   	var noteBody = inputBody.value;
 	inputTitle.value = '';
 	inputBody.value='';
-	console.log('Current note content has been cleared successfully');
 }
 
+function playNote(){
+	title = document.getElementById('title').value;
+	content = document.getElementById('content').value;
+    responsiveVoice.speak("title is," + title +", content are,"+content);
+}
 
 /* Add a note to the display, and storage */
 
@@ -62,7 +67,6 @@ function addNote() {
       inputTitle.value = '';
       inputBody.value = '';
       storeNote(noteTitle,noteBody);
-	  console.log('Note has been added sucessfully');
     	}
 
   }, onError);
@@ -74,7 +78,6 @@ function storeNote(title, body) {
   var storingNote = browser.storage.local.set({ [title] : body });
   storingNote.then(() => {
     displayNote(title,body);
-	console.log('Note stored successfully');
   }, onError);
 }
 
@@ -89,6 +92,7 @@ function displayNote(title, body) {
   var notePara = document.createElement('p');
   var deleteBtn = document.createElement('button');
   var editBtn = document.createElement('button');
+  var playBtn = document.createElement('button');
   var clearFix = document.createElement('div');
 
   note.setAttribute('class','note');
@@ -99,12 +103,14 @@ function displayNote(title, body) {
   editBtn.setAttribute('class','reset');
   deleteBtn.textContent = 'Delete note';
   editBtn.textContent = 'Edit note';
+  playBtn.textContent = 'Play';
   clearFix.setAttribute('class','clearfix');
 
   noteDisplay.appendChild(noteH);
   noteDisplay.appendChild(notePara);
   noteDisplay.appendChild(deleteBtn);
   noteDisplay.appendChild(editBtn);
+  noteDisplay.appendChild(playBtn);
   noteDisplay.appendChild(clearFix);
 
   note.appendChild(noteDisplay);
@@ -115,9 +121,12 @@ function displayNote(title, body) {
     const evtTgt = e.target;
     evtTgt.parentNode.parentNode.parentNode.removeChild(evtTgt.parentNode.parentNode);
     browser.storage.local.remove(title);
-	console.log('Current note has been deleted.');
   })
   
+  /* play title and content */
+   playBtn.addEventListener('click',(e) => {
+   responsiveVoice.speak("title is," + title +", content are,"+body);
+  })
 
   /* create note edit box */
   var noteEdit = document.createElement('div');
@@ -153,17 +162,18 @@ function displayNote(title, body) {
   editBtn.addEventListener('click',() => {
     noteDisplay.style.display = 'none';
     noteEdit.style.display = 'block';
-	console.log('Editing the current selected note');
   })
 
-
+  editBtn.addEventListener('click',() => {
+    noteDisplay.style.display = 'none';
+    noteEdit.style.display = 'block';
+  }) 
 
   cancelBtn.addEventListener('click',() => {
     noteDisplay.style.display = 'block';
     noteEdit.style.display = 'none';
     noteTitleEdit.value = title;
     noteBodyEdit.value = body;
-	console.log('Canceled editing current note.');
   })
 
   updateBtn.addEventListener('click',() => {
@@ -185,10 +195,8 @@ function updateNote(delNote,newTitle,newBody) {
       removingNote.then(() => {
         displayNote(newTitle, newBody);
       }, onError);
-	  console.log('Note fail to update');
     } else {
       displayNote(newTitle, newBody);
-	  console.log('Note has been updated');
     }
   }, onError);
 }
@@ -196,10 +204,8 @@ function updateNote(delNote,newTitle,newBody) {
 /* Clear all notes from the display/storage */
 
 function clearAll() {
-	  while (noteContainer.firstChild) {
-		  noteContainer.removeChild(noteContainer.firstChild);
-	  }
-	  browser.storage.local.clear();
-	  console.log('Deleted all existing note');
+  while (noteContainer.firstChild) {
+      noteContainer.removeChild(noteContainer.firstChild);
+  }
+  browser.storage.local.clear();
 }
-	
