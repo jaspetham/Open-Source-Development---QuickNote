@@ -48,7 +48,11 @@ function emptyNote(){
 function playNote(){
 	title = document.getElementById('title').value;
 	content = document.getElementById('content').value;
-    responsiveVoice.speak("title is," + title +", content are,"+content);
+	if (content === ''){
+		responsiveVoice.speak("Title is: " + title +", Content is: empty ");
+	}else{
+    responsiveVoice.speak("Title is: " + title +", Content are: "+content);
+	}
 }
 
 /* Add a note to the display, and storage */
@@ -97,6 +101,7 @@ function displayNote(title, body) {
   var deleteBtn = document.createElement('button');
   var editBtn = document.createElement('button');
   var playBtn = document.createElement('button');
+  var dlBtn = document.createElement('button');
   var clearFix = document.createElement('div');
 
   note.setAttribute('class','note');
@@ -132,6 +137,8 @@ function displayNote(title, body) {
    playBtn.addEventListener('click',(e) => {
    responsiveVoice.speak("title is," + title +", content are,"+body);
   })
+  
+
 
   /* create note edit box */
   var noteEdit = document.createElement('div');

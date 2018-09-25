@@ -12,23 +12,29 @@
     <div class="new-note">
       <input type="text" id="title">
       <textarea id="content" value = "empty"></textarea>
-      <button class="clear">Clear notes</button>
-	<button class="empty">Empty note</button>
-      <button class="add">Add note</button>
-<button class="butt play js--triggerAnimation"
-type="button" value="Play Title">Play</button>
-
-      <div class="clearfix"></div>
+		<button class="clear">Clear notes</button>
+		<button class="empty">Empty note</button>
+		<button class="add">Add note</button>
+		<button class="butt play js--triggerAnimation"
+		type="button" value="Play Title">Play Note</button>
+		<button class="translate" onclick='test();'>Translate Content</button>
+		
+	<div class="translate_message" style="display:none;"></div>
+	<div class="clearfix"></div>
+	  
     </div>
-    
     <div class="note-container">
- 
+
     </div>
   </div>
-<script src="https://code.responsivevoice.org/responsivevoice.js"></script>
+  <script src="https://code.responsivevoice.org/responsivevoice.js"></script>
   <script src="quicknote.js"></script>
-<script>
-	</script>
+  <script src="translate.js"></script>
+  <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+
 </body>
 
 </html>
