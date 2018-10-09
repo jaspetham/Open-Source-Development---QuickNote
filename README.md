@@ -1,3 +1,4 @@
+## This is for an  OSD assignment project
 # Quicknote
 
 A persistent note/to-do list application — click a button in your browser and record notes, which will persist even after browser restarts.
@@ -26,5 +27,4 @@ Quicknote uses the WebExtensions [Storage API](https://developer.mozilla.org/en-
 
 * How to persist data in a WebExtension using the Storage API.
 
-## This is for an assignment project
 
